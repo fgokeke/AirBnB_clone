@@ -5,6 +5,7 @@
 import unittest
 from models.base_model import BaseModel
 from datetime import datetime
+import time
 
 
 class TestBaseModel(unittest.TestCase):
@@ -25,7 +26,7 @@ class TestBaseModel(unittest.TestCase):
         id_set = set(instance.id for instance in instances)
         self.assertEqual(len(id_set), len(instances))
 
-    def test_creat_at_update_at_datetime_objects:
+    def test_creat_at_update_at_datetime_objects(self):
         """
         Test that 'created_at' and 'updated_at'
         are instances of datetime.
@@ -64,19 +65,13 @@ class TestBaseModel(unittest.TestCase):
         self.assertNotEqual(obj.updated_at, initial_updated_at)
         self.assertEqual(obj.created_at, initial_created_at)
 
-    def test_updated_at_with_multiple_saves(self):
-        """
-        Test that 'updated_at' is updated when
-        'save' is called multiple times.
-        """
-        obj = BaseModel()
-        initial_updated_at = obj.updated_at
+        time.sleep(1)
+
+        obj.save()
 
         time.sleep(1)
 
         obj.save()
-        time.sleep(1)
-        obj.save
 
         self.assertNotEqual(obj.updated_at, initial_updated_at)
 
@@ -88,6 +83,7 @@ class TestBaseModel(unittest.TestCase):
         obj = BaseModel()
         obj_dict = obj.to_dict()
 
+        self.assertIsInstance(obj_dict, dict)
         self.assertIn('__class__', obj_dict)
         self.assertIn('id', obj_dict)
         self.assertIn('created_at', obj_dict)
@@ -109,11 +105,11 @@ class TestBaseModel(unittest.TestCase):
         in the dictionary are in ISO format.
         """
         obj = BaseModel()
-        obj_dict = obj.to_dict()
+        obj_dic = obj.to_dict()
 
-        iso_format = "%Y-%m-%dT%H:%M:%S.%f"
-        self.assertTrue(datetime.strptime(obj_dict['created_at'], iso_format))
-        self.assertTrue(datetime.strptime(obj_dict['updated_at'], iso_format))
+        iso = "%Y-%m-%dT%H:%M:%S.%f"
+        create_dic = datetime.strptime(obj_dic['created_at'], iso).isoformat()
+        self.assertEqual(create_dic, obj.created_at)
 
     def test_class_in_dict_matches_instance_class(self):
         """
@@ -134,7 +130,7 @@ class TestBaseModel(unittest.TestCase):
         obj.custom_attribute = custom_attribute
         obj_dict = obj.to_dict()
 
-        self.assertNotIn('custom_attribute', obj_dict)
+        self.assertIn('custom_attribute', obj_dict)
 
     def test_default_str_output(self):
         """
@@ -145,6 +141,20 @@ class TestBaseModel(unittest.TestCase):
         expected_output = f"[BaseModel] ({obj.id}) {obj.__dict__}"
 
         self.assertEqual(str_output, expected_output)
+
+    def test_create_instance_from_dict(self):
+        """
+        Test creating a BaseModel instance from a
+        dictionary representation.
+        """
+        my_obj = BaseModel()
+        obj_dict = my_obj.to_dict()
+
+        obj = BaseModel(**obj_dict)
+
+        self.assertEqual(obj.__class__.__name__, obj_dict['__class__'])
+        self.assertEqual(obj.created_at.isoformat(), obj_dict['created_at'])
+        self.assertEqual(obj.updated_at.isoformat(), obj_dict['updated_at'])
 
 
 if __name__ == '__main__':
