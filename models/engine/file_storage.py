@@ -3,7 +3,7 @@
 file and deserializes JSON file to instances"""
 
 
-from models.base_model import BaseModel
+import models.base_model.BaseModel as BaseModel
 import json
 from os.path import exists
 
@@ -49,7 +49,6 @@ class FileStorage:
         data = {}
         for key, obj in self.__objects.items():
             data[key] = obj.to_dict()
-
         with open(self.__file_path, 'w', encoding='utf-8') as file:
             json.dump(data, file)
 
@@ -61,7 +60,7 @@ class FileStorage:
         """
         if exists(self.__file_path):
             with open(self.__file_path, 'r', encoding='utf-8') as file:
-                data = json.load(file)
+                data = json.load(file.read())
 
             for key, value in data.items():
                 class_name, obj_id = key.split('.')
