@@ -3,10 +3,9 @@
 file and deserializes JSON file to instances"""
 
 
-import models.base_model.BaseModel as BaseModel
 import json
 from os.path import exists
-
+from models.base_model import BaseModel
 
 class FileStorage:
     """
@@ -58,12 +57,12 @@ class FileStorage:
         JSON file (__file_path) exists).
         If the file doesn’t exist, no exception should be raised.
         """
+        classes = {"BaseModel": BaseModel}
         if exists(self.__file_path):
             with open(self.__file_path, 'r', encoding='utf-8') as file:
-                data = json.load(file.read())
+                data = json.load(file)
 
             for key, value in data.items():
                 class_name, obj_id = key.split('.')
-                class_ = globals()[class_name]
-                obj = class_(**value)
+                obj = classes[class_name](**value)
                 self.__objects[key] = obj

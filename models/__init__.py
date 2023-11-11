@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
 
-import models.engine.file_storage.FileStorage as FileStorage
+import models.engine.file_storage as file_storage
 
 
-storage = FileStorage()
+storage = file_storage.FileStorage()
 
 storage.reload()
