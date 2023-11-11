@@ -2,10 +2,10 @@
 ''' This module is for Place class model '''
 
 
-import models.BaseModel as BaseModel
+import models.base_model as base_model
 
 
-class Place(BaseModel):
+class Place(base_model.BaseModel):
     ''' A class that defines Place by
     city_id, user_id, name, description, number_rooms, number_bathrooms,
     max_guest, price_by_night, latitude, longitude and amenity_ids'''
