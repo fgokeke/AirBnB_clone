@@ -2,10 +2,10 @@
 ''' This module contain the User class '''
 
 
-import models.BaseModel as BaseModel
+import models.base_model
 
 
-class User(BaseModel):
+class User(models.base_model.BaseModel):
     ''' A class that defines a user by
     email, password, first_name and last_name '''
     email = ""
