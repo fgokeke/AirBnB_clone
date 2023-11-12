@@ -141,7 +141,7 @@ class TestUserModel(unittest.TestCase):
         expected_output = f"[User] ({obj.id}) {obj.__dict__}"
 
         self.assertEqual(str_output, expected_output)
-    
+
     def test_create_instance_from_dict(self):
         """
         Test creating a User instance from a
