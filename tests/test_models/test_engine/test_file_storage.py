@@ -24,10 +24,11 @@ class TestFileStorage(unittest.TestCase):
 
     def test_02file_path_private(self):
         ''' Test the __file_path is a private class attribute '''
-        self.assertRaises(AttributeError, storage.file_path)
-        self.assertRaises(AttributeError, storage._file_path)
-        self.assertRaises(AttributeError, storage.__file_path)
-        self.assertTrue(hasattr(storage, _FileStorage__file_path))
+        with self.assertRaises(AttributeError):
+            storage.file_path
+            storage._file_path
+            storage.__file_path
+        self.assertTrue(hasattr(storage, "_FileStorage__file_path"))
 
     def test_03file_path_type(self):
         ''' Test the type of __file_path is a str '''
@@ -43,10 +44,11 @@ class TestFileStorage(unittest.TestCase):
 
     def test_05objects_private(self):
         ''' Test the __objects is a private class attribute '''
-        self.assertRaises(AttributeError, storage.objects)
-        self.assertRaises(AttributeError, storage._objects)
-        self.assertRaises(AttributeError, storage.__objects)
-        self.assertTrue(hasattr(storage, _FileStorage__objects))
+        with self.assertRaises(AttributeError):
+            storage.objects
+            storage._objects
+            storage.__objects
+        self.assertTrue(hasattr(storage, "_FileStorage__objects"))
 
     def test_06objects_type(self):
         ''' Test the type of __objects is a dict '''
@@ -84,21 +86,29 @@ class TestFileStorage(unittest.TestCase):
         
         my_model_key = f"{my_model.__class__.__name__}.{my_model.id}"
         all_objs = storage.all()
+        
         self.assertIn(my_model_key, all_objs.keys())
-        self.assertIn('id', all_objs[my_model_key].keys())
-        self.assertEqual(all_objs[my_model_key]['id'], my_model.id)
-        self.assertIn('name', all_objs[my_model_key].keys())
-        self.assertIn('my_number', all_objs[my_model_key].keys())
+        
+        self.assertTrue(hasattr(all_objs[my_model_key], 'id'))
+        self.assertEqual(all_objs[my_model_key].id, my_model.id)
+
+        self.assertTrue(hasattr(all_objs[my_model_key], 'name'))
+        self.assertEqual(all_objs[my_model_key].name, my_model.name)
+
+        self.assertTrue(hasattr(all_objs[my_model_key], 'my_number'))
+        self.assertEqual(all_objs[my_model_key].my_number, my_model.my_number)
 
 # Testing save() method in FileStorage class
 
     def test_12save_return(self):
         ''' Test the return value of the save() method is None '''
+        my_model = BaseModel()
         self.assertIsNone(my_model.save())
         self.assertIsNone(storage.save())
 
     def test_13save_Nof_arguments(self):
         ''' Test number of arguments save() can accept is 0 '''
+        my_model = BaseModel()
         self.assertRaises(TypeError, storage.save(), "argument")
         self.assertRaises(TypeError, my_model.save(), "argument")
 
@@ -108,9 +118,13 @@ class TestFileStorage(unittest.TestCase):
         my_model = BaseModel()
         my_model.save()
 
-        self.assertTrue(os.path.exists(my_model._BaseModel__file_path))
-        self.assertTrue(os.path.getsize(my_model._BaseModel__file_path) > 0)
+        self.assertTrue(os.path.exists(storage._FileStorage__file_path))
+        self.assertTrue(os.path.getsize(storage._FileStorage__file_path) > 0)
 
+    @classmethod
+    def tearDownClass(cls):
+        '''This removes file.json which is created in the test'''
+        os.remove("file.json")
 # Testing reload() method in FileStorage class which is used by models/__init__
 # This part should be devided into 2 part one in the top and one in the end
 
@@ -120,4 +134,3 @@ class TestFileStorage(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
