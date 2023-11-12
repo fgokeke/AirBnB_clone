@@ -74,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         else:
             key = "{}.{}".format(args[0], args[1])
-            objects = storage().all()
+            objects = storage.all()
             if key in objects:
                 print(objects[key])
             else:
@@ -95,10 +95,10 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         else:
             key = "{}.{}".format(args[0], args[1])
-            objects = storage().all()
+            objects = storage.all()
             if key in objects:
                 del objects[key]
-                storage().save()
+                storage.save()
             else:
                 print("** no instance found **")
 
@@ -109,7 +109,7 @@ class HBNBCommand(cmd.Cmd):
         Ex: $ all BaseModel or $ all.
         """
         args = arg.split()
-        objects = storage().all()
+        objects = storage.all()
 
         if not arg:
             print([str(obj) for obj in objects.values()])
@@ -126,7 +126,7 @@ class HBNBCommand(cmd.Cmd):
         Ex: $ update BaseModel 1234-1234-1234 email "aibnb@mail.com".
         """
         args = arg.split()
-        objects = storage().all()
+        objects = storage.all()
 
         if not arg:
             print("** class name missing **")
