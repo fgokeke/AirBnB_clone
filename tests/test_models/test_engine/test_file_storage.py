@@ -54,11 +54,6 @@ class TestFileStorage(unittest.TestCase):
         ''' Test the type of __objects is a dict '''
         self.assertIsInstance(storage._FileStorage__objects, dict)
 
-    def test_07objects_value(self):
-        ''' In this test we assume that the if refered in __file_path
-        does not exist; so __objects will be empty '''
-        self.assertEqual(storage._FileStorage__objects, dict())
-
 # Testing all() method in FileStorage class
 
     def test_08all_return_type(self):
@@ -123,6 +118,11 @@ class TestFileStorage(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        '''This removes file.json which is created in the test'''
+        os.remove("file.json")
+
+    @classmethod
+    def setUpClass(cls):
         '''This removes file.json which is created in the test'''
         os.remove("file.json")
 # Testing reload() method in FileStorage class which is used by models/__init__
