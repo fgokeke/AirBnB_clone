@@ -8,6 +8,7 @@ from models.engine.file_storage import FileStorage
 from models import storage
 from models.base_model import BaseModel
 
+
 class TestFileStorage(unittest.TestCase):
     '''TestSuite for FileStorage class'''
 
@@ -17,10 +18,9 @@ class TestFileStorage(unittest.TestCase):
         ''' Testing the storage object '''
         self.assertIsInstance(storage, FileStorage)
 
-
 # Test the class attribute of storage
 
-    ## Tests for __file_path:
+    # Tests for `__file_path`
 
     def test_02file_path_private(self):
         ''' Test the __file_path is a private class attribute '''
@@ -39,8 +39,8 @@ class TestFileStorage(unittest.TestCase):
         self.assertGreater(len(storage._FileStorage__file_path), len(".json"))
         end_of_file_path = storage._FileStorage__file_path[(-len(".json")):]
         self.assertEqual(end_of_file_path, ".json")
-    
-    ## Tests for __objects:
+
+    # Tests for __objects:
 
     def test_05objects_private(self):
         ''' Test the __objects is a private class attribute '''
@@ -57,7 +57,7 @@ class TestFileStorage(unittest.TestCase):
     def test_07objects_value(self):
         ''' In this test we assume that the if refered in __file_path
         does not exist; so __objects will be empty '''
-        self.assertEqual(storage._FileStorage__objects , dict())
+        self.assertEqual(storage._FileStorage__objects, dict())
 
 # Testing all() method in FileStorage class
 
@@ -83,12 +83,12 @@ class TestFileStorage(unittest.TestCase):
         my_model = BaseModel()
         my_model.name = "My_First_Model"
         my_model.my_number = 89
-        
+
         my_model_key = f"{my_model.__class__.__name__}.{my_model.id}"
         all_objs = storage.all()
-        
+
         self.assertIn(my_model_key, all_objs.keys())
-        
+
         self.assertTrue(hasattr(all_objs[my_model_key], 'id'))
         self.assertEqual(all_objs[my_model_key].id, my_model.id)
 
