@@ -2,7 +2,7 @@
 ''' This module is for Review class model '''
 
 
-import models.base_model as base_model 
+import models.base_model as base_model
 
 
 class Review(base_model.BaseModel):
