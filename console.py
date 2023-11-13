@@ -157,8 +157,9 @@ class HBNBCommand(cmd.Cmd):
         if cmd_name == "all()":
             self.do_all(class_name)
         elif cmd_name.startswith("show"):
-            ID = cmd_name[6:-1]
+            ID = cmd_name[5:-1]
             arg = f"{class_name} {ID}"
+            print(arg)
             self.do_show(arg)
 
 
