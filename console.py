@@ -156,6 +156,10 @@ class HBNBCommand(cmd.Cmd):
         cmd_name = args[1]
         if cmd_name == "all()":
             self.do_all(class_name)
+        elif cmd_name.startswith("show"):
+            ID = cmd_name[6:-1]
+            arg = f"{class_name} {ID}"
+            self.do_show(arg)
 
 
 if __name__ == '__main__':
