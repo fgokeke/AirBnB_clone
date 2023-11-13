@@ -159,8 +159,11 @@ class HBNBCommand(cmd.Cmd):
         elif cmd_name.startswith("show"):
             ID = cmd_name[5:-1]
             arg = f"{class_name} {ID}"
-            print(arg)
             self.do_show(arg)
+        elif cmd_name.startswith("destroy"):
+            ID = cmd_name[9:-2]
+            arg = f"{class_name} {ID}"
+            self.do_destroy(arg)
 
 
 if __name__ == '__main__':
