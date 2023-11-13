@@ -149,6 +149,14 @@ class HBNBCommand(cmd.Cmd):
                 setattr(obj, attr_name, attr_value)
                 obj.save
 
+    def default(self, line):
+        ''' To handle <class name>.<command>() syntax '''
+        args = line.split(".")
+        class_name = args[0]
+        cmd_name = args[1]
+        if cmd_name == "all()":
+            self.do_all(class_name)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
